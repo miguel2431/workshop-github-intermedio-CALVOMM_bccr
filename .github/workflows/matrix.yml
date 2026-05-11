@@ -45,13 +45,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Ejecutar pruebas
-        run: |
-          dotnet test \
-            --configuration Release \
-            --no-restore \
-            --collect:"XPlat Code Coverage" \
-            --results-directory ./coverage \
-            --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test --configuration Release --no-restore --collect:"XPlat Code Coverage" --results-directory ./coverage --logger "trx;LogFileName=test-results.trx"
 
       - name: Subir resultado por combinación
         uses: actions/upload-artifact@v4
