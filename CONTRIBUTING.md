@@ -4,10 +4,10 @@
 
 ## Cómo contribuir
 
-1. Crea una rama descriptiva desde `main`: `git checkout -b mejora/nombre-descriptivo`
-2. Haz tus cambios siguiendo las convenciones del proyecto
-3. Asegúrate de que los tests pasen: `dotnet test`
-4. Crea un Pull Request con descripción clara
+1. Crea una rama descriptiva desde `main`: `git checkout -b mejora/nombre-descriptivo`.
+2. Haz tus cambios siguiendo las convenciones del proyecto.
+3. Asegúrate de que los tests pasen: `dotnet test`.
+4. Crea un Pull Request con descripción clara.
 
 ## Convenciones
 
