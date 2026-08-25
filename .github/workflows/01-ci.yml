@@ -53,4 +53,35 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Ejecutar pruebas
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: |
+          dotnet test \
+            --configuration Release \
+            --no-build \
+            --logger "trx;LogFileName=resultados.trx" \
+            --results-directory ./resultados
+
+      - name: Publicar resultados de pruebas
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: resultados-de-pruebas
+          path: ./resultados
+          retention-days: 5
+          if-no-files-found: error
+
+      - name: Escribir el resumen del run
+        if: always()
+        run: |
+          TRX=$(find ./resultados -name '*.trx' | head -1)
+          TOTAL=$(grep -o 'total="[0-9]*"' "$TRX" | head -1 | grep -o '[0-9]*')
+          PASADAS=$(grep -o 'passed="[0-9]*"' "$TRX" | head -1 | grep -o '[0-9]*')
+          FALLIDAS=$(grep -o 'failed="[0-9]*"' "$TRX" | head -1 | grep -o '[0-9]*')
+          {
+            echo "### Resultado de las pruebas"
+            echo ""
+            echo "| Métrica | Valor |"
+            echo "|---------|-------|"
+            echo "| Total    | ${TOTAL:-0} |"
+            echo "| Pasadas  | ${PASADAS:-0} |"
+            echo "| Fallidas | ${FALLIDAS:-0} |"
+          } >> "$GITHUB_STEP_SUMMARY"
